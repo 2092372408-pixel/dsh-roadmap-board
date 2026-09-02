@@ -1,0 +1,263 @@
+{
+  "title": "教育智能体 · 执行路线",
+  "note": "第6步执行中：完整执行检测（验证面板实时状态）",
+  "panel": {
+    "x": -13,
+    "y": 45,
+    "open": false,
+    "w": 1280,
+    "h": 840
+  },
+  "globals": [],
+  "lanes": [
+    {
+      "id": "L0",
+      "title": "阶段0 · 范围与地基",
+      "steps": [
+        {
+          "id": "S00",
+          "text": "确认范围：辅导闭环+资料问答；K12 数学；公开样例",
+          "state": "done",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S01",
+          "text": "产出 PLAN.md v1 路径规划",
+          "state": "done",
+          "skill": "",
+          "branches": [
+            {
+              "id": "B00",
+              "text": "修复：动态工具不可调用 → 文件通道",
+              "state": "done"
+            },
+            {
+              "id": "B01",
+              "text": "完善：PLAN.md §7 主线规约",
+              "state": "done"
+            }
+          ]
+        },
+        {
+          "id": "S02",
+          "text": "重规划为执行级路线",
+          "state": "done",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S2-mtjz4mnp",
+          "text": "回顾修复代码",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S3-mtjz4zxv",
+          "text": "完整执行检测",
+          "state": "doing",
+          "skill": "",
+          "branches": []
+        }
+      ]
+    },
+    {
+      "id": "L1",
+      "title": "阶段1 · 教学协议",
+      "steps": [
+        {
+          "id": "S10",
+          "text": "pedagogy.md 主体（角色卡+五步闭环+逃生门）",
+          "state": "done",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S11",
+          "text": "试讲 5 题跑协议+打分",
+          "state": "todo",
+          "skill": "tutor-loop",
+          "branches": []
+        },
+        {
+          "id": "S12",
+          "text": "按反馈修订 → pedagogy.md v1.1",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S13",
+          "text": "出题规则：五档难度+变式规则",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S14",
+          "text": "反幻觉条款",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        }
+      ]
+    },
+    {
+      "id": "L2",
+      "title": "阶段2 · 知识层",
+      "steps": [
+        {
+          "id": "S20",
+          "text": "knowledge/README 规范",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S21",
+          "text": "单元讲义：一元一次方程",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S22",
+          "text": "例题库 20 题（三档+分步解法）",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S23",
+          "text": "变式模板集",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S24",
+          "text": "records/README 字段规范",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        }
+      ]
+    },
+    {
+      "id": "L3",
+      "title": "阶段3 · 原型工程化",
+      "steps": [
+        {
+          "id": "S30",
+          "text": "查证 preset 挂载规范",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S31",
+          "text": "写 Agent Preset 人设节",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S32",
+          "text": "技能1 辅导协议",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S33",
+          "text": "技能2 知识问答",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S34",
+          "text": "技能3 出题变式",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S35",
+          "text": "挂载验证：新会话试讲 3 题",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        }
+      ]
+    },
+    {
+      "id": "L4",
+      "title": "阶段4 · 闭环与记忆",
+      "steps": [
+        {
+          "id": "S40",
+          "text": "回合落档闭环",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S41",
+          "text": "开场检索输出上次错因+计划",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S42",
+          "text": "错题接力演练",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        }
+      ]
+    },
+    {
+      "id": "L5",
+      "title": "阶段5 · 评测与迭代",
+      "steps": [
+        {
+          "id": "S50",
+          "text": "test-set（5 题+3 陷阱）",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S51",
+          "text": "基线 4 维打分",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        },
+        {
+          "id": "S52",
+          "text": "迭代 2~3 轮 ≥3.5 不倒退",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        }
+      ]
+    },
+    {
+      "id": "L6",
+      "title": "阶段6 · 产品化（暂缓）",
+      "steps": [
+        {
+          "id": "S60",
+          "text": "产品化选型调研",
+          "state": "todo",
+          "skill": "",
+          "branches": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "title": "示例项目 · 官网重构路线",
+  "note": "展示：任意项目只要有自己的 roadmap.json，插件即可整套复用",
+  "panel": { "x": 0, "y": 0, "open": true, "w": 1280, "h": 840 },
+  "globals": [],
+  "lanes": [
+    {
+      "id": "P1",
+      "title": "阶段1 · 调研设计",
+      "steps": [
+        { "id": "D1", "text": "梳理现有站点与埋点，产出页面结构图", "state": "done", "skill": "", "branches": [] },
+        { "id": "D2", "text": "新视觉稿 + 组件清单", "state": "done", "skill": "", "branches": [ { "id": "B1", "text": "完善：首页首屏性能预算", "state": "done" } ] },
+        { "id": "D3", "text": "技术选型与目录约定", "state": "todo", "skill": "", "branches": [] }
+      ]
+    },
+    {
+      "id": "P2",
+      "title": "阶段2 · 开发实现",
+      "steps": [
+        { "id": "D4", "text": "搭建脚手架与 CI", "state": "doing", "skill": "", "branches": [] },
+        { "id": "D5", "text": "首页 / 产品页 / 关于页开发", "state": "todo", "skill": "", "branches": [] },
+        { "id": "D6", "text": "响应式与可访问性收尾", "state": "todo", "skill": "", "branches": [] }
+      ]
+    },
+    {
+      "id": "P3",
+      "title": "阶段3 · 上线与复盘",
+      "steps": [
+        { "id": "D7", "text": "预发布验证与回滚预案", "state": "todo", "skill": "deploy-check", "branches": [] },
+        { "id": "D8", "text": "正式上线并观察指标", "state": "todo", "skill": "", "branches": [] },
+        { "id": "D9", "text": "复盘文档与后续优化队列", "state": "todo", "skill": "", "branches": [] }
+      ]
+    }
+  ]
+}

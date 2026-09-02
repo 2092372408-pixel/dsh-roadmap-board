@@ -1,0 +1,11 @@
+# repo-local ignores
+node_modules/
+*.log
+.DS_Store
+
+# never commit live project data outside examples/
+**/.progress/board-diag.json
+board-project.json
+
+# keep example data committed
+!examples/**/roadmap.json

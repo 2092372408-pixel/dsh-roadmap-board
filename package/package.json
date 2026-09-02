@@ -1,0 +1,11 @@
+{
+  "name": "dsh-roadmap-board",
+  "version": "0.1.0",
+  "description": "Human-AI shared execution roadmap board for DSH (host side). See ../README.md.",
+  "license": "MIT",
+  "main": "index.js",
+  "files": ["index.js", "../src/board-host.js"],
+  "scripts": {
+    "check": "node -e \"const s=require('fs').readFileSync('./index.js','utf8');new Function(s);console.log('syntax ok')\""
+  }
+}

@@ -1,0 +1,21 @@
+# agent.cordis.yml（模板 —— 需要先完成“本地插件包”步骤）
+#
+# 说明：本看板的核心代码在 ../src/board-host.js 与 ../src/board-client.js，
+# 是“动态 Cordis 插件”形态（会话内 define/run）。要把它的 Host 能力与
+# Client 悬浮层带进**任意新会话**，需要两步：
+#
+# 1) 把 src 打成 DSH 本地插件包（参考仓库根 README 的打包指引，例如
+#    `dsh plugin add ./package` 得到类似 `@local/dsh-roadmap-board` 的名字）；
+# 2) 在本组合里挂一行，并把 Host 侧也当作普通插件行组合进来：
+#
+# 示例行（占位，实际包名以第 1 步结果为准）：
+#
+# - id: roadmap-board
+#   name: dsh-roadmap-board
+#   config: {}
+#
+# 更稳妥的基线：从已装 preset（如 `standard`）copy 一份完整组合到
+# $DSH_HOME/.agent-presets/ 下，再追加上述一行，用 standingKeyFor 做
+# 装载校验（见 editing-cordis-compositions 技能的“Verifying a change”）。
+#
+# 未完成打包前，开发/试用请直接走“动态插件”路径（详见 preset/README.md）。
