@@ -1,52 +1,95 @@
-# dsh-roadmap-board
+<div align="center">
 
-**DSH（DeepSeek Harness）上的人机共享“执行路线图”看板插件 v0.1**
+# 📋 dsh-roadmap-board
 
-让 AI 在多轮落地中不跑偏、且可被随时看见/接管：把目标拆成 **横向阶段 → 步骤** 的可执行图；人可在面板**增删改未来项、排序、给步骤绑技能**；AI 执行前读图、执行时点亮状态、返工走分支、完成即写回；页面 1.5s 内实时同步。
+**人机共享的执行路线图看板 · Human-AI Shared Execution Roadmap for DSH**
 
-灵感对应：LangGraph 式的非线性编排（主线 + 并行/分支 + 状态机），而非 LangChain 式死链。
+让多轮落地的 AI **不跑偏、被看见、可接管**：目标 → 横向阶段 → 步骤，形成一棵“可执行图”。
+人随时增删改未来项、排序、给步骤绑技能；AI 执行前读图、执行时点亮、返工走分支、完成即写回。
 
-## 特性
+`MIT` · Cordis Plugin / Agent Preset · v0.1
 
-- 横向执行链条：`根标题 → 阶段0 → 阶段1 → …`，阶段内步骤顺序 ↓ 串联；
-- 编辑模式：增删改「未完成」步骤、**▲▼ 排序**、重命名、删除、加阶段；已完成只读（进度由 AI 推进）；
-- **步骤↔技能绑定**：下拉选择项目真实技能（读 `<项目根>/.agents/skills` + 平台技能库），绑定步骤加高并第二行显示 `⚙ 技能`；
-- **全局技能**：每步执行前都加载；
-- **返工/完善侧栏**：`branches` 挂在所属步骤、右侧独立展示，不破坏主线；
-- **实时状态**：AI 把步骤标为 `doing` 后，状态条显示“▶ 当前执行：…”，节点高亮；`write/edit` 文件更新都实时上屏；
-- **跨项目复用**：数据/技能按项目根隔离；面板可切换项目（下拉 + 手动路径）；新项目自动通用种子。
+</div>
 
-## 快速开始
+---
 
-两种使用方式（详见 `docs/`）：
+## ✨ 它在解决什么
 
-1. **动态插件（推荐开发期）**：把 `src/board-host.js` 与 `src/board-client.js` 作为 `code.host` / `code.client` 用 `cordis_define` 注册，`cordis_run` 激活，即在本会话出现右下角「📋 执行路线图」。
-2. **Agent Preset（推荐交付）**：按 `preset/roadmap-board/` 模板把看板封装为 preset（见该目录 README），放入 `$DSH_HOME/.agent-presets/`，新建会话即可用。
+| 问题 | 本看板的答案 |
+|---|---|
+| AI 多轮“跑偏” | 路线文件 = 唯一事实源，AI 每轮**先读图只做唯一 doing**（`docs/agent-protocol.md`） |
+| 你看不到 AI 干到哪 | 面板 **1.5s 实时同步**：状态条 `▶ 当前执行：…` + 节点点亮，`write/edit` 都触发 |
+| 人是旁观者 | 编辑模式随时**增删改未完成项、▲▼ 排序**；已完成只读（进度归 AI） |
+| 非线性编排 | 阶段→步骤 顺序主线 + 右侧「返工/完善」分支 + 并行 todo，类 LangGraph 而非死链 |
+| 每步该用什么能力 | 步骤可**绑定技能**（`⚙ 技能：…` 第二行显示），执行前自动加载；另有全局技能 |
+| 换一个项目就要重写 | **按项目根隔离**：数据在 `<项目根>/.progress/roadmap.json`，技能在 `.agents/skills`，一键切换 |
 
-数据：
+## 🗺️ 一眼看懂
+
+```text
+┌────────────────────────────────────────────────────────────────────────┐
+│  📋 教育智能体 · 执行路线                     ✎编辑  ↻  —              │
+│  ▶ 当前执行：试讲 5 题跑协议+打分                                       │
+│  ○待办 ▶进行中 ✓完成 ↻修改中 ⊘受阻        项目：deepseek_harness ▾     │
+├───────────────┬──────────────────┬──────────────────┬─────────────────┤
+│  阶段0 范围与地基 │   阶段1 教学协议   │   阶段2 知识层     │  阶段3 原型工程化 …│
+│  ✓确认范围      │  ✓pedagogy 主体   │  ○knowledge 规范  │  ○查证 preset    │
+│  ✓PLAN v1      │  ▶试讲 5 题       │  ○单元讲义        │  ○写 Agent 人设   │
+│  ✓重规划        │     ⚙ tutor-loop  │  ○例题库 20 题    │  ○技能1 辅导…     │
+│  ○回顾修复代码   │  ○修订协议        │  ○…               │                  │
+│  ○完整执行检测   │                   │                  │                  │
+├───────────────┴──────────────────┴──────────────────┴─────────────────┤
+│  修复 / 完善：B00 修复：动态工具不可调用→文件通道        …               │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+> 横向 = 主线执行顺序；阶段内 ↓ 箭头 = 步骤顺序；绑定技能的步骤自动加高并显示 `⚙ 技能名`。
+
+## 🚀 两分钟上手
+
+**方式 A：动态插件（试用）** — 本会话注册即可
+
+```js
+// code.host  ← src/board-host.js 内容；code.client ← src/board-client.js 内容
+// 然后用 cordis_run 激活；右下角出现「📋 项目路线 ›」
+```
+
+**方式 B：Agent Preset（交付）** — 见 `preset/roadmap-board/README.md`（先按你的 DSH 插件契约打本地包，再在组合加一行并装载校验）。
+
+**项目数据结构**
 
 ```text
 <项目根>/
-├─ .progress/roadmap.json      # 看板数据（唯一事实源）
-├─ .progress/roadmap.seed.json #（可选）空项目专用种子
+├─ .progress/roadmap.json          # 看板数据 = 唯一事实源
+├─ .progress/roadmap.seed.json     # （可选）空看板专用种子
 └─ .agents/skills/<name>/SKILL.md  # 该项目可用技能
 ```
 
-## 文档
+**人 ↔ AI 协作流**
 
-- `docs/schema.md` — roadmap.json 结构与语义（阶段/步骤/分支/技能/globals）
-- `docs/agent-protocol.md` — AI 使用规约（先读图→只做 doing→先加载技能→岔路分支→写回）
-- `docs/portability.md` — 部署参数化（默认项目根/技能根/扫描开关）
+```text
+人在面板编辑(结构/技能/顺序)          AI 读文件 → 加载技能 → 推进 doing
+        └──────────► roadmap.json ◄──────────────┘
+              （双向同步：write/edit 均实时上屏）
+```
 
-## 示例
+## 📚 文档
 
-- `examples/edu/roadmap.json` — 教育智能体路线（K12 辅导，绑 tutor-loop）
-- `examples/website/roadmap.json` — 官网重构路线（演示自定义标题/流程/技能 deploy-check）
+| 文档 | 内容 |
+|---|---|
+| `docs/schema.md` | roadmap.json 完整结构：阶段/步骤/分支/技能/globals |
+| `docs/agent-protocol.md` | AI 规约：先读图 → 只做 doing → 先加载技能 → 岔路分支 → 写回 |
+| `docs/portability.md` | 部署参数化：`defaultRoot / configFile / presetSkillRoots / discoverRoots` |
 
-## 路线图（v0.2+ 候选）
+## 🧪 示例
 
-依赖与并行边线、步骤验收/备注、清单视图、按 preset 内置的协议化技能、将 Host 逻辑打成 npm 插件包以便一行安装。
+- `examples/edu/roadmap.json` — 教育智能体路线（K12 辅导，绑 `tutor-loop`）
+- `examples/website/roadmap.json` — 官网重构路线（自定义标题/流程/技能 `deploy-check`）
 
-## License
+## 🗒️ 路线图
 
-MIT（见 `LICENSE`）。示例数据与教育技能仅作演示。
+依赖与并行边线 · 步骤验收/备注 · 清单视图 · 正式 npm 打包一键装载 · 效果动图
+
+## 📄 License
+
+MIT © dsh-roadmap-board contributors
