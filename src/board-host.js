@@ -1,13 +1,13 @@
 /**
- * dsh-roadmap-board — Host half (v0.1, parameterized for publishing).
+ * dsh-roadmap-board 鈥?Host half (v0.1, parameterized for publishing).
  *
  * Register via cordis_define as code.host, or wrap into an agent preset
  * (see preset/roadmap-board). File access only through ctx.get('fs').
  *
  * CONFIG (see docs/portability.md):
  *  - defaultRoot:      null (auto) or an absolute project root
- *  - discoverRoots:    null | string[] — root dirs to scan for projects
- *  - presetSkillRoots: string[]        — extra skill roots (deployment presets)
+ *  - discoverRoots:    null | string[] 鈥?root dirs to scan for projects
+ *  - presetSkillRoots: string[]        鈥?extra skill roots (deployment presets)
  *  - configFile:       null | absolute path of the project-switch config
  */
 const CONFIG = {
@@ -36,10 +36,10 @@ const fnum = (v, d) => (typeof v === 'number' && isFinite(v) ? Math.round(v) : d
 const fbool = (v, d) => (typeof v === 'boolean' ? v : d)
 const finite = (v, d) => (typeof v === 'number' && isFinite(v) ? Math.round(v) : d)
 const normPanel = (raw) => { const p = raw && typeof raw === 'object' ? raw : {}; return { x: fnum(p.x, 0), y: fnum(p.y, 0), open: fbool(p.open, true), w: fnum(p.w, 1280), h: fnum(p.h, 840) } }
-const makeLane = (title) => ({ id: nid('L'), title: clean(title, 60) || '未命名阶段', steps: [] })
+const makeLane = (title) => ({ id: nid('L'), title: clean(title, 60) || '鏈懡鍚嶉樁娈?, steps: [] })
 const normPath = (p) => (typeof p === 'string' ? p.replace(/\\/g, '/') : '')
 const withSlash = (p) => String(p).replace(/\\/g, '/').replace(/\/+$/, '')
-const boardAbsOf = (r) => withSlash(r) + '/.progress/roadmap.json'
+const boardAbsOf = (r) => (r ? withSlash(r) + '/.progress/roadmap.json' : '.progress/roadmap.json')
 const skillsAbsOf = (r) => withSlash(r) + '/.agents/skills'
 
 function normStep(raw) {
@@ -71,11 +71,11 @@ function normalizeGlobals(raw) {
 
 function normalizeState(raw) {
   const src = raw && typeof raw === 'object' ? raw : {}
-  const out = { title: clean(src.title, 80) || '项目路线', note: clean(src.note, 300), panel: normPanel(src.panel), globals: normalizeGlobals(src), lanes: [] }
+  const out = { title: clean(src.title, 80) || '椤圭洰璺嚎', note: clean(src.note, 300), panel: normPanel(src.panel), globals: normalizeGlobals(src), lanes: [] }
   if (Array.isArray(src.lanes)) {
     for (const l of src.lanes.slice(0, LIMITS.lanes)) {
       if (!l || typeof l !== 'object') continue
-      const lane = { id: vId(l.id, 'L'), title: clean(l.title, 60) || '未命名阶段', steps: [] }
+      const lane = { id: vId(l.id, 'L'), title: clean(l.title, 60) || '鏈懡鍚嶉樁娈?, steps: [] }
       if (Array.isArray(l.steps)) {
         for (const s of l.steps.slice(0, LIMITS.steps)) {
           const step = normStep(s)
@@ -85,11 +85,11 @@ function normalizeState(raw) {
       out.lanes.push(lane)
     }
   }
-  if (!out.lanes.length) out.lanes.push(makeLane('主线'))
+  if (!out.lanes.length) out.lanes.push(makeLane('涓荤嚎'))
   return out
 }
 
-const fresh = () => Object.assign({ rev: 0 }, normalizeState({ title: '项目路线', note: '', lanes: [] }))
+const fresh = () => Object.assign({ rev: 0 }, normalizeState({ title: '椤圭洰璺嚎', note: '', lanes: [] }))
 const stepTotal = (st) => { let n = 0; for (const l of st.lanes) n += l.steps.length; return n }
 const parseObj = (content) => { try { const o = JSON.parse(content); return o && typeof o === 'object' ? o : null } catch (e) { return null } }
 const fsMode = () => (!fsS.fs ? (fsS.ready ? 'no-fs' : 'init') : fsS.failed ? 'readonly' : 'file')
@@ -312,12 +312,12 @@ async function mutate(args) {
 
 function toolResult(op) {
   const lines = []
-  lines.push('全局技能：' + ((S.globals && S.globals.length) ? S.globals.join(', ') : '（无）'))
+  lines.push('鍏ㄥ眬鎶€鑳斤細' + ((S.globals && S.globals.length) ? S.globals.join(', ') : '锛堟棤锛?))
   for (const l of S.lanes) {
-    lines.push('阶段「' + l.title + '」')
+    lines.push('闃舵銆? + l.title + '銆?)
     for (const s of l.steps) {
       const g = s.state === 'done' ? '[x]' : s.state === 'doing' ? '[>]' : s.state === 'fix' ? '[~]' : s.state === 'blocked' ? '[!]' : '[ ]'
-      lines.push('- ' + g + ' ' + s.text + (s.skill ? '（skill: ' + s.skill + '）' : '') + (s.branches.length ? '（分支 ' + s.branches.length + ' 条）' : ''))
+      lines.push('- ' + g + ' ' + s.text + (s.skill ? '锛坰kill: ' + s.skill + '锛? : '') + (s.branches.length ? '锛堝垎鏀?' + s.branches.length + ' 鏉★級' : ''))
       for (const b of s.branches) {
         const bg = b.state === 'done' ? '[x]' : b.state === 'fix' ? '[~]' : '[ ]'
         lines.push('    - ' + bg + ' ' + b.text)
@@ -329,9 +329,9 @@ function toolResult(op) {
 
 const renderTool = (args, value) => {
   const v = value && typeof value === 'object' ? value : {}
-  const title = typeof v.title === 'string' && v.title ? v.title : '（未命名）'
-  const head = (v.op === 'view' ? '当前项目路线「' : '已同步项目路线「') + title + '」' + (typeof v.note === 'string' && v.note ? '：' + v.note : '')
-  return [{ type: 'text', text: head + '\n' + (typeof v.lanes === 'string' ? v.lanes : '（空）') }]
+  const title = typeof v.title === 'string' && v.title ? v.title : '锛堟湭鍛藉悕锛?
+  const head = (v.op === 'view' ? '褰撳墠椤圭洰璺嚎銆? : '宸插悓姝ラ」鐩矾绾裤€?) + title + '銆? + (typeof v.note === 'string' && v.note ? '锛? + v.note : '')
+  return [{ type: 'text', text: head + '\n' + (typeof v.lanes === 'string' ? v.lanes : '锛堢┖锛?) }]
 }
 
 async function ensureLoaded(ctx) {
@@ -344,7 +344,7 @@ async function ensureLoaded(ctx) {
       if (!fs) { fsS.failed = true; return }
       fsS.fs = fs
       root = await resolveRoot(fs, ctx)
-      if (!root) return
+      if (!root) { S = fresh(); S.rev = 1; return }
       const ok = await loadBoard(fs)
       if (!ok) { S = fresh(); S.rev = 1 }
     }
@@ -400,13 +400,13 @@ return {
     }))
     const def = harness.defineTool({
       name: 'project_progress',
-      description: '查看或更新当前项目的“执行路线看板”。数据在 <项目根>/.progress/roadmap.json；<项目根>/.agents/skills 为该项目的技能库。AI 执行前先 view 读取（含用户改动、全局技能与步骤 skill 绑定），每步完成 replace 同步。顶层 globals 为全局技能；lanes=[{title, steps:[{text,state,skill?,branches:[{text,state}]}]}]；state∈todo/doing/done/fix/blocked；至多一条 doing；技能须存在否则如实说明；问题挂 fix 分支。',
+      description: '鏌ョ湅鎴栨洿鏂板綋鍓嶉」鐩殑鈥滄墽琛岃矾绾跨湅鏉库€濄€傛暟鎹湪 <椤圭洰鏍?/.progress/roadmap.json锛?椤圭洰鏍?/.agents/skills 涓鸿椤圭洰鐨勬妧鑳藉簱銆侫I 鎵ц鍓嶅厛 view 璇诲彇锛堝惈鐢ㄦ埛鏀瑰姩銆佸叏灞€鎶€鑳戒笌姝ラ skill 缁戝畾锛夛紝姣忔瀹屾垚 replace 鍚屾銆傞《灞?globals 涓哄叏灞€鎶€鑳斤紱lanes=[{title, steps:[{text,state,skill?,branches:[{text,state}]}]}]锛泂tate鈭坱odo/doing/done/fix/blocked锛涜嚦澶氫竴鏉?doing锛涙妧鑳介』瀛樺湪鍚﹀垯濡傚疄璇存槑锛涢棶棰樻寕 fix 鍒嗘敮銆?,
       parameters: {
-        op: { type: 'string', enum: ['view', 'replace', 'reset'], required: true, description: 'view=读当前路线；replace=整体替换（先 view 合并用户改动）；reset=清空' },
-        title: { type: 'string', description: '路线图标题（仅 replace）' },
-        note: { type: 'string', description: '当前状态/下一步（仅 replace）' },
-        globals: { type: 'array', description: '全局技能名（仅 replace 时生效，省略保留现有）', items: { type: 'string' } },
-        lanes: { type: 'array', description: '完整阶段数组（仅 replace）', items: { type: 'object', additionalProperties: false, properties: { title: { type: 'string', required: true }, steps: { type: 'array', required: true, items: { type: 'object', additionalProperties: false, properties: { text: { type: 'string', required: true }, state: { type: 'string', enum: ['todo', 'doing', 'done', 'fix', 'blocked'], required: true }, skill: { type: 'string', description: '执行本步需加载的技能名' }, branches: { type: 'array', items: { type: 'object', additionalProperties: false, properties: { text: { type: 'string', required: true }, state: { type: 'string', enum: ['todo', 'doing', 'done', 'fix', 'blocked'], required: true } } } } } } } } } },
+        op: { type: 'string', enum: ['view', 'replace', 'reset'], required: true, description: 'view=璇诲綋鍓嶈矾绾匡紱replace=鏁翠綋鏇挎崲锛堝厛 view 鍚堝苟鐢ㄦ埛鏀瑰姩锛夛紱reset=娓呯┖' },
+        title: { type: 'string', description: '璺嚎鍥炬爣棰橈紙浠?replace锛? },
+        note: { type: 'string', description: '褰撳墠鐘舵€?涓嬩竴姝ワ紙浠?replace锛? },
+        globals: { type: 'array', description: '鍏ㄥ眬鎶€鑳藉悕锛堜粎 replace 鏃剁敓鏁堬紝鐪佺暐淇濈暀鐜版湁锛?, items: { type: 'string' } },
+        lanes: { type: 'array', description: '瀹屾暣闃舵鏁扮粍锛堜粎 replace锛?, items: { type: 'object', additionalProperties: false, properties: { title: { type: 'string', required: true }, steps: { type: 'array', required: true, items: { type: 'object', additionalProperties: false, properties: { text: { type: 'string', required: true }, state: { type: 'string', enum: ['todo', 'doing', 'done', 'fix', 'blocked'], required: true }, skill: { type: 'string', description: '鎵ц鏈闇€鍔犺浇鐨勬妧鑳藉悕' }, branches: { type: 'array', items: { type: 'object', additionalProperties: false, properties: { text: { type: 'string', required: true }, state: { type: 'string', enum: ['todo', 'doing', 'done', 'fix', 'blocked'], required: true } } } } } } } } } },
       },
       output: { schema: { type: 'json' }, render: renderTool },
       execute: async (args) => {
@@ -429,3 +429,4 @@ return {
     ctx.effect(() => harness.registerTool(ctx, def))
   },
 }
+
